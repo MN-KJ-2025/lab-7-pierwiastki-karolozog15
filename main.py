@@ -66,6 +66,8 @@ def frob_a(coef: np.ndarray) -> np.ndarray | None:
         F[len(coef)-2][i]=-coef[i]/coef[-1]
     for i in range(1,len(coef)-1):
         F[i-1][i]=1
+
+    F = np.where(np.abs(F) < 1e-10, 0.0, F)
     return F
 
 
@@ -81,4 +83,13 @@ def is_nonsingular(A: np.ndarray) -> bool | None:
             wypadku `False`.
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    
+    if not isinstance(A, np.ndarray): 
+        return None
+    if len(A.shape) != 2 or A.shape[0] != A.shape[1]:
+        return None
+    if np.linalg.det(A) == 0:
+        return False
+    else:
+        return True
+
